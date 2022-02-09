@@ -1,0 +1,10 @@
+asgiref==3.4.1
+coverage==6.1.2
+Django==3.2.9
+djangorestframework==3.12.4
+linecache2==1.0.0
+pytz==2021.3
+six==1.16.0
+sqlparse==0.4.2
+traceback2==1.4.0
+unittest2==1.1.0
