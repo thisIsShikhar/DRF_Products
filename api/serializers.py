@@ -14,6 +14,8 @@ class SalesInvoiceSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SalesInvoiceDetailsSerializer(serializers.ModelSerializer):
+    SalesInvoiceId = SalesInvoiceSerializer(many = True, read_only = True)
+    ProductId = ProductSerializer(many = True, read_only = True)
     
     class Meta:
         model = SalesInvoiceDetails
