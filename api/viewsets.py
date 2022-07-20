@@ -5,14 +5,28 @@ from app.restmsg import Msg
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from django.shortcuts import get_object_or_404
+from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
+from django.core.paginator import Paginator
+
 
 class ProductViewset(viewsets.ViewSet):
     queryset=models.Product.objects.all()
     serializer_class=serializers.ProductSerializer
+    pagination_class = PageNumberPagination
     
     def list(self, request, *args, **kwargs):
         queryset = models.Product.objects.all()
-        serializer = serializers.ProductSerializer(queryset, many=True, context={'request': request})
+        # pagination_class = PageNumberPagination
+
+        # page_number = self.request.query_params.get('page_number')
+        # page_size = self.request.query_params.get('page_size ')
+
+        paginator = PageNumberPagination()
+        result_page = paginator.paginate_queryset(queryset,request, view=self)
+
+        # paginator = Paginator(queryset, page_size)
+        # serializer = serializers.ProductSerializer(paginator.page(page_number), many=True, context={'request': request})
+        serializer = serializers.ProductSerializer(result_page, many=True, context={'request': request})
         return Response(
             Msg.encode(200, 'List of Products', None, serializer.data)
             , status=status.HTTP_200_OK
