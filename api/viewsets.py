@@ -7,13 +7,15 @@ from rest_framework.viewsets import ViewSet
 from django.shortcuts import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from django.core.paginator import Paginator
+from api.pagination import CustomPagination
 
 
 class ProductViewset(viewsets.ViewSet):
     queryset=models.Product.objects.all()
     serializer_class=serializers.ProductSerializer
     # pagination_class = PageNumberPagination
-    pagination_class = LimitOffsetPagination
+    # pagination_class = LimitOffsetPagination
+    pagination_class = CustomPagination
     
     def list(self, request, *args, **kwargs):
         queryset = models.Product.objects.all()
@@ -23,7 +25,8 @@ class ProductViewset(viewsets.ViewSet):
         # page_size = self.request.query_params.get('page_size ')
 
         # paginator = PageNumberPagination()
-        paginator = LimitOffsetPagination()
+        # paginator = LimitOffsetPagination()
+        paginator = CustomPagination()
         result_page = paginator.paginate_queryset(queryset,request, view=self)
 
         # paginator = Paginator(queryset, page_size)
