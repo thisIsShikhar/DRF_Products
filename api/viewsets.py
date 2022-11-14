@@ -15,10 +15,11 @@ class ProductViewset(viewsets.ViewSet):
     serializer_class=serializers.ProductSerializer
     # pagination_class = PageNumberPagination
     # pagination_class = LimitOffsetPagination
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
     
     def list(self, request, *args, **kwargs):
         queryset = models.Product.objects.all()
+        serializer = serializers.ProductSerializer(queryset, many=True, context={'request': request})
         # pagination_class = PageNumberPagination
 
         # page_number = self.request.query_params.get('page_number')
@@ -26,12 +27,13 @@ class ProductViewset(viewsets.ViewSet):
 
         # paginator = PageNumberPagination()
         # paginator = LimitOffsetPagination()
-        paginator = CustomPagination()
-        result_page = paginator.paginate_queryset(queryset,request, view=self)
+        # paginator = CustomPagination()
+        # result_page = paginator.paginate_queryset(queryset,request, view=self)
 
         # paginator = Paginator(queryset, page_size)
         # serializer = serializers.ProductSerializer(paginator.page(page_number), many=True, context={'request': request})
-        serializer = serializers.ProductSerializer(result_page, many=True, context={'request': request})
+
+        # serializer = serializers.ProductSerializer(result_page, many=True, context={'request': request})
         return Response(
             Msg.encode(200, 'List of Products', None, serializer.data)
             , status=status.HTTP_200_OK
