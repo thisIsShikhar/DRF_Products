@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from django.core.paginator import Paginator
 from api.pagination import CustomPagination
+from django.contrib.postgres.search import SearchVector
 
 
 class ProductViewset(viewsets.ViewSet):
@@ -212,3 +213,22 @@ class SalesInvoiceDetailsViewset(viewsets.ViewSet):
             Msg.encode(200, "Deleted Successfully!", None, None)
             , status=status.HTTP_200_OK
         ) 
+
+
+### SEARCH ###
+
+class SearchViewset(viewsets.ViewSet):
+
+    model = models.Product
+    context_object_name = "ProductName"
+
+    def list(self, request, *args, **kwargs):
+        query = self.request.GET.get("q")
+        queryset = models.Product.objects.annotate(search=SearchVector("ProductName", "ProductCode")).filter(
+            search=query
+        )
+        serializer = serializers.ProductSerializer(queryset, many=True, context={'request': request})
+        return Response(
+            Msg.encode(200, 'List of Search Results', None, serializer.data)
+            , status=status.HTTP_200_OK
+    )
