@@ -9,6 +9,7 @@ from rest_framework.pagination import LimitOffsetPagination, PageNumberPaginatio
 from django.core.paginator import Paginator
 from api.pagination import CustomPagination
 from django.contrib.postgres.search import SearchVector
+from django.db.models import Q
 
 
 class ProductViewset(viewsets.ViewSet):
@@ -224,9 +225,8 @@ class SearchViewset(viewsets.ViewSet):
 
     def list(self, request, *args, **kwargs):
         query = self.request.GET.get("q")
-        queryset = models.Product.objects.annotate(search=SearchVector("ProductName", "ProductCode")).filter(
-            search=query
-        )
+
+        queryset = models.Product.objects.filter(Q(ProductName__icontains=query)|Q(ProductCode__icontains=query))
         serializer = serializers.ProductSerializer(queryset, many=True, context={'request': request})
         return Response(
             Msg.encode(200, 'List of Search Results', None, serializer.data)
