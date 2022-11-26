@@ -13,14 +13,14 @@ class Product(models.Model):
     ImgHeight = models.CharField(max_length = 50, blank=True, null=True)
     ImgWidth = models.CharField(max_length =50, blank=True, null=True)
 
-    # def save(self, *args, **kwargs):
-    #     if self.Image != None:
-    #         import cv2
-    #         im = cv2.imread(self.Image)
-    #         self.ImgHeight = im[0]
-    #         self.ImgWidth = im[1]
+    def save(self, *args, **kwargs):
+        if self.Image != None:
+            import cv2
+            im = cv2.imread(self.Image)
+            self.ImgHeight = im[0]
+            self.ImgWidth = im[1]
 
-    #     super(Product, self).save(*args, **kwargs)
+        super(Product, self).save(*args, **kwargs)
 
 class SalesInvoice(models.Model):
 
