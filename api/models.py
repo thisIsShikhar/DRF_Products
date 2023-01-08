@@ -8,6 +8,7 @@ class Product(models.Model):
     Id = models.IntegerField(primary_key=True, blank=False, null=False)
     ProductCode = models.CharField(max_length=64)
     ProductName = models.CharField(max_length=255)
+    ProductInfo = models.TextField(null=True, blank=True)
     SellingPrice = models.IntegerField()
     Image = models.ImageField(blank=True, null=True)
     ImgHeight = models.CharField(max_length = 50, blank=True, null=True)
