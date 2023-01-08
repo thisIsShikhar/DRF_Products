@@ -23,6 +23,7 @@ class Product(models.Model):
 
         super(Product, self).save(*args, **kwargs)
 
+
 class SalesInvoice(models.Model):
 
     Id = models.IntegerField(primary_key=True, blank=False, null= False)
