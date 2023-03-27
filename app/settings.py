@@ -45,8 +45,8 @@ INSTALLED_APPS = [
 ]
 
 SUMMERNOTE_CONFIG = {
-    'disable_attachment': True,
-    }
+    'attachment_upload_view': 'django_summernote.views.upload_attachment.as_view',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -112,6 +112,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+# from app.auth.TokenAuthenticationWithAudience import TokenAuthenticationWithAudience
+
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
@@ -121,8 +123,14 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '5/minute',
         'user': '7/day'
-    }
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'app.auth.TokenAuthenticationWithAudience.TokenAuthenticationWithAudience',
+    ],
 }
+
+AUTHORIZATION_SERVER_URL = 'http://localhost:8001/auth/'
+AUDIENCE = 'http://localhost:8000/'
 
 
 # Password validation
